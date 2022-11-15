@@ -1,15 +1,19 @@
 exports.GetWeatherByCity = async function (req, res) {
   let api = `https://api.openweathermap.org/data/2.5/weather?q=${req.params.city}&appid=7914d5a440960cfd5df3bd0388a7ad0f&units=metric`;
 
-  let response = await fetch(api, {
-    method: "get",
-    headers: { "Content-Type": "application/json" },
-  });
-  let data = await response.json();
+  try {
+    let response = await fetch(api, {
+      method: "get",
+      headers: { "Content-Type": "application/json" },
+    });
+    let data = await response.json();
 
-  let obj = { city: data.name, temp: data.main.temp };
-  setInterval(() => console.log(obj.temp), 60*60*24*1000);
-  res.json(obj);
+    let obj = { city: data.name, temp: data.main.temp };
+    setInterval(() => console.log(obj.temp), 60 * 60 * 24 * 1000);
+    res.json(obj);
+  } catch (err) {
+    res.json({message: "Not correct city"});
+  }
 };
 
 exports.GetWeatherByCoord = function (req, res) {
